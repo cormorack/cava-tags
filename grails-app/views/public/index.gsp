@@ -10,7 +10,7 @@
 
 <body>
 <header>
-    <h1>Tag Me</h1>
+    <h1>Media Tags</h1>
 </header>
 
 <main>
@@ -33,8 +33,7 @@
     <ul v-if="store.results.length > 0">
         <li v-for="tag in store.results" :key="tag.id">
             <div>
-                <h4>{{ shorten(tag.title, 21) }}</h4>
-                <p>{{ shorten(tag.description, 21) }}</p>
+                <h4><a v-bind:href="'public/tag/' + tag.urlTitle">{{ tag.title }}</a></h4>
             </div>
         </li>
     </ul>
@@ -43,12 +42,12 @@
 <!-- <script> -->
 <script type="module">
 
-    import { createApp, reactive } from 'https://unpkg.com/petite-vue?module'
+    import { createApp, reactive } from '${assetPath(src: 'petite-vue.es.js')}?module'
 
     const store = reactive({
         term: "",
         results: "",
-        msg: "No tags for you"
+        msg: ""
     });
 
     const searchBox = function () {
@@ -58,7 +57,7 @@
                 if (store.term.length > 1) {
                     store.msg = "loading...";
                     let resp = await fetch(
-                        'http://localhost:8080/public/tags?term=' + store.term
+                        location.origin + '/public/tags?term=' + store.term
                     );
                     let tags = await resp.json();
                     store.results = tags.results;
@@ -72,18 +71,14 @@
                 } else {
                     store.msg = "Please type something";
                 }
-                console.log(store.results);
+                //console.log(store.results);
             }
         };
     };
 
     const results = function () {
         return {
-            $template: "#results",
-            shorten(str, maxLen, separator = " ") {
-                if (str.length <= maxLen) return str;
-                return str.substr(0, str.lastIndexOf(separator, maxLen));
-            }
+            $template: "#results"
         };
     };
 

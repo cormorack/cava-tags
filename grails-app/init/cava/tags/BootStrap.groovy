@@ -39,9 +39,12 @@ class BootStrap {
         Media media = new Media(title: "Media 1", url: "https://interactiveoceans.washington.edu/img_2170/").save()
         Media media2 = new Media(title: "Media 2", url: "https://interactiveoceans.washington.edu/img_8704/").save()
 
-        Tag tag = new Tag(title: "Test Tag", urlTitle: "test-tag")
-        tag.addToMedia(media)
-        tag.addToMedia(media2)
-        tag.save()
+        (1..< 20).each{
+            Tag tag = new Tag(title: "${it} tag", urlTitle: "${it}-tag")
+            tag.addToMedia(media)
+            tag.addToMedia(media2)
+            tag.save()
+        }
+
     }
 }

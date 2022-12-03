@@ -5,13 +5,6 @@ import spock.lang.Specification
 
 class AuthInterceptorSpec extends Specification implements InterceptorUnitTest<AuthInterceptor> {
 
-    def setup() {
-    }
-
-    def cleanup() {
-
-    }
-
     void "Test auth interceptor matching"() {
         when:"A request matches the interceptor"
             withRequest(controller:"auth")

@@ -3,6 +3,8 @@ package cava.tags
 import grails.gorm.PagedResultList
 import grails.compiler.GrailsCompileStatic
 
+import static org.springframework.http.HttpStatus.NOT_FOUND
+
 @GrailsCompileStatic
 class PublicController {
 
@@ -22,11 +24,36 @@ class PublicController {
 
         response.setContentType("application/json;charset=UTF-8")
 
-        render template: "tags", model: [
-                max: params.max,
-                resultCount: tagList.getTotalCount() ?: 0,
-                offset: params.offset,
-                tagList: tagList ]
+        render template: "/public/tags",
+                model: [
+                    max: params.max,
+                    resultCount: tagList.getTotalCount() ?: 0,
+                    offset: params.offset,
+                    tagList: tagList
+                ]
+    }
+
+    def tag() {
+
+        String urlTitle = params.title
+
+        if (!urlTitle) {
+            notFound()
+            return
+        }
+
+        Tag tag = Tag.findByUrlTitle(urlTitle)
+
+        if (!tag) {
+            notFound()
+            return
+        }
+
+        render tag
+    }
+
+    protected void notFound() {
+        render status: NOT_FOUND
     }
 
     /**
@@ -35,7 +62,7 @@ class PublicController {
      */
     protected void setParams(Integer max) {
 
-        params.max = Math.min(max ?: 10, 100)
+        params.max = Math.min(max ?: 100, 100)
 
         if (!params.sort) {
             params.sort = "date"
