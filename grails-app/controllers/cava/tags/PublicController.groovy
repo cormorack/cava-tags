@@ -12,6 +12,8 @@ class PublicController {
 
     def index() {}
 
+    def test() {}
+
     /**
      *
      * @param max

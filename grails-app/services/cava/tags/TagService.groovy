@@ -1,6 +1,8 @@
 package cava.tags
 
 import grails.gorm.services.Service
+import org.hibernate.FetchMode as FM
+import org.hibernate.sql.JoinType
 
 @Service(Tag)
 abstract class TagService implements ITagService {
@@ -19,6 +21,8 @@ abstract class TagService implements ITagService {
                     ilike("description", "%${ args.term }%")
                 }
             }
+            fetchMode 'media', FM.JOIN
+            //resultTransformer Criteria.DISTINCT_ROOT_ENTITY
             order(args.sort, args.order)
             maxResults(args.max)
             firstResult(args.offset)
