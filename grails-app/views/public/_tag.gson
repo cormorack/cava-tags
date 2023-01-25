@@ -1,0 +1,9 @@
+import cava.tags.Tag
+
+model {
+    Tag tag
+}
+
+json {
+    results g.render(tag, [deep:true]) {}
+}

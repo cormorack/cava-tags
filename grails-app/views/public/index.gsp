@@ -33,7 +33,7 @@
     <div class="tagcloud03">
         <ul v-if="store.results.length > 0">
             <li v-for="tag in store.results" :key="tag.id">
-                <a v-bind:href="'public/tag/' + tag.urlTitle">{{ tag.title }}<span>20</span></a>
+                <a v-bind:href="'public/tag/' + tag.urlTitle">{{ tag.title }}<span>{{ tag.media.length }}</span></a>
             </li>
         </ul>
     </div>
@@ -54,7 +54,7 @@
         return {
             $template: "#search",
             async search() {
-                if (store.term.length > 1) {
+                if (store.term.length > 0) {
                     store.msg = "loading...";
                     let resp = await fetch(
                         location.origin + '/public/tags?term=' + store.term

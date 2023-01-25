@@ -37,6 +37,18 @@ class PublicController {
 
     def tag() {
 
+        if (!params.title) {
+            notFound()
+            return
+        }
+
+        [tag: params.title]
+    }
+
+    def findByTitle() {
+
+        response.setContentType("application/json;charset=UTF-8")
+
         String urlTitle = params.title
 
         if (!urlTitle) {
@@ -44,14 +56,14 @@ class PublicController {
             return
         }
 
-        Tag tag = Tag.findByUrlTitle(urlTitle)
+        Tag tag = tagService.findByUrlTitle(urlTitle)
 
         if (!tag) {
             notFound()
             return
         }
 
-        render tag
+        render template: "/public/tag", model: [tag: tag]
     }
 
     protected void notFound() {
