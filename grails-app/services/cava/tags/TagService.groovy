@@ -39,8 +39,6 @@ abstract class TagService implements ITagService {
      */
     Tag findByTitle(String title) {
 
-        Tag tag = null
-
         Closure query = {
             eq("urlTitle", title)
             fetchMode 'media', FM.JOIN
@@ -49,6 +47,8 @@ abstract class TagService implements ITagService {
         }
 
         List results = Tag.createCriteria().list(query)
+
+        Tag tag = null
 
         if (results.size() > 0) {
             tag = results[0] as Tag

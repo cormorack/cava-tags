@@ -1,5 +1,6 @@
 package cava.tags
 
+import grails.converters.JSON
 import grails.gorm.PagedResultList
 import grails.compiler.GrailsCompileStatic
 
@@ -35,6 +36,10 @@ class PublicController {
                 ]
     }
 
+    /**
+     *
+     * @return
+     */
     def tag() {
 
         if (!params.title) {
@@ -45,6 +50,9 @@ class PublicController {
         [tag: params.title]
     }
 
+    /**
+     *
+     */
     def findByTitle() {
 
         response.setContentType("application/json;charset=UTF-8")
@@ -67,7 +75,14 @@ class PublicController {
     }
 
     protected void notFound() {
-        render status: NOT_FOUND
+
+        if (response.contentType != "application/json;charset=UTF-8") {
+            render status: NOT_FOUND
+        }
+        else {
+            Map m = ['status': NOT_FOUND.toString()]
+            render m as JSON
+        }
     }
 
     /**

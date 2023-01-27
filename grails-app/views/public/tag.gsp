@@ -2,59 +2,51 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <title>Vue-Petite Itunes Search</title>
-    <meta charset="UTF-8" />
-    <asset:stylesheet href="tags.css"/>
-</head>
+    <head>
+        <title>Tag Detail</title>
+        <meta name="layout" content="public" />
+    </head>
 
-<body>
-<header>
-    <h1>Media Tags</h1>
-</header>
+    <body>
+        <div class="container">
+            <div class="row">
+                <h3 class="text-center">Media Tags</h3>
+                <div class="col">
+                    <div v-scope v-effect="fetchData()" class="tag">
+                        <h3>{{ results.title }}</h3>
+                        <shiro:isLoggedIn>
+                            <br /><a :href="'/tag/edit/' + results.id">Edit</a>
+                        </shiro:isLoggedIn>
+                        <div class="tagcloud03">
+                            <ul>
+                                <li v-for="media in results.media" :key="media.id">
+                                    <a v-bind:href="media.url">{{ media.title }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+        <script type="module">
 
-<main>
-    <section id="resultsbox" v-scope="results()"></section>
-</main>
+            import { createApp } from '${assetPath(src: 'petite-vue.es.js')}?module'
 
-<template id="results">
-    <h3>{{ store.results.title }}</h3>
-    <div class="tagcloud03">
-        <ul>
-            <li v-for="media in store.results.media" :key="media.id">
-                <a v-bind:href="media.url">{{ media.title }}</a>
-            </li>
-        </ul>
-    </div>
-</template>
+            createApp({
+                results: [],
+                fetchData() {
+                    fetch(location.origin + '/public/findByTitle?title=' + '${tag}')
+                        .then((res) => res.json())
+                        .then((data) => {
+                            this.results = data.results
+                        }
+                    )
+                }
+            }).mount();
 
-<!-- <script> -->
-<script type="module">
-
-    import { createApp, reactive } from '${assetPath(src: 'petite-vue.es.js')}?module'
-
-    const store = reactive({
-        results: ""
-    });
-
-    const results = function() {
-
-        fetch(location.origin + '/public/findByTitle?title=' + '${tag}')
-            .then((res) => res.json())
-            .then((data) => {
-                this.store.results = data.results
-            }
-        )
-        return {
-            $template: "#results"
-        };
-    };
-
-    createApp({
-        results,
-        store
-    }).mount();
-
-</script>
-</body>
+        </script>
+    </body>
 </html>
+
+
