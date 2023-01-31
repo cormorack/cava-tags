@@ -28,4 +28,8 @@ class Tag {
     String toString() {
         return title
     }
+
+    Set<Tag> getTags() {
+        TagAssociation.findAllByTag(this).collect { it.otherTag } as Set
+    }
 }

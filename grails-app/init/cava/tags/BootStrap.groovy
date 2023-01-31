@@ -46,5 +46,10 @@ class BootStrap {
             tag.save()
         }
 
+        Tag tag1 = Tag.get(1)
+        Tag tag2 = Tag.get(2)
+
+        TagAssociation tagAssociation = new TagAssociation(tag1, tag2).save()
+
     }
 }
