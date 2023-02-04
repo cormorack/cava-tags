@@ -6,7 +6,7 @@ class TagAssociation implements Serializable {
     Tag otherTag
 
     static mapping = {
-        table 'tag_tags'
+        table 'tag_tag'
         version false
         otherTag column:'tags__id'
         id composite: ['tag', 'otherTag']

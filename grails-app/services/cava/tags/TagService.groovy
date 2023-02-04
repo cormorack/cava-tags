@@ -42,6 +42,7 @@ abstract class TagService implements ITagService {
         Closure query = {
             eq("urlTitle", title)
             fetchMode 'media', FM.JOIN
+            fetchMode 'tags', FM.JOIN
             maxResults(1)
             setReadOnly true
         }

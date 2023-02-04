@@ -43,13 +43,16 @@ class BootStrap {
             Tag tag = new Tag(title: "${it} tag", urlTitle: "${it}-tag")
             tag.addToMedia(media)
             tag.addToMedia(media2)
-            tag.save()
+            tag.save(flush:true)
         }
 
-        Tag tag1 = Tag.get(1)
-        Tag tag2 = Tag.get(2)
+        Tag tag1 = Tag.findByTitle("1 tag")
+        Tag tag2 = Tag.findByTitle("2 tag")
 
-        TagAssociation tagAssociation = new TagAssociation(tag1, tag2).save()
+        if (tag1 != null && tag2 != null) {
 
+            TagAssociation tagAssociation = new TagAssociation(tag: tag1, otherTag: tag2).save(flush:true)
+            TagAssociation otherTagAssociation = new TagAssociation(tag: tag2, otherTag: tag1).save(flush:true)
+        }
     }
 }

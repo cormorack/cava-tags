@@ -19,6 +19,13 @@
                         </shiro:isLoggedIn>
                         <div class="tagcloud03">
                             <ul>
+                                <li v-for="tag in results.tags" :key="tag.id">
+                                    {{ tag.title }}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tagcloud03">
+                            <ul>
                                 <li v-for="media in results.media" :key="media.id">
                                     <a v-bind:href="media.url">{{ media.title }}</a>
                                 </li>
