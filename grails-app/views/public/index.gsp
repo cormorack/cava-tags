@@ -40,7 +40,8 @@
 
         <script type="module">
 
-            import { createApp, reactive } from '${assetPath(src: 'petite-vue.es.js')}?module'
+            /*import { createApp, reactive } from '${assetPath(src: 'petite-vue.es.js')}?module'*/
+            import { createApp, reactive } from 'https://unpkg.com/petite-vue@0.2.2/dist/petite-vue.es.js?module'
 
             const store = reactive({
                 term: "",
