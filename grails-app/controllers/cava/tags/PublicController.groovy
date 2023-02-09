@@ -1,5 +1,6 @@
 package cava.tags
 
+import grails.converters.JSON
 import grails.gorm.PagedResultList
 import grails.compiler.GrailsCompileStatic
 
@@ -11,6 +12,8 @@ class PublicController {
     TagService tagService
 
     def index() {}
+
+    def test() {}
 
     /**
      *
@@ -33,7 +36,26 @@ class PublicController {
                 ]
     }
 
+    /**
+     *
+     * @return
+     */
     def tag() {
+
+        if (!params.title) {
+            notFound()
+            return
+        }
+
+        [tag: params.title]
+    }
+
+    /**
+     *
+     */
+    def findByTitle() {
+
+        response.setContentType("application/json;charset=UTF-8")
 
         String urlTitle = params.title
 
@@ -42,18 +64,25 @@ class PublicController {
             return
         }
 
-        Tag tag = Tag.findByUrlTitle(urlTitle)
+        Tag tag = tagService.findByUrlTitle(urlTitle)
 
         if (!tag) {
             notFound()
             return
         }
 
-        render tag
+        render template: "/public/tag", model: [tag: tag]
     }
 
     protected void notFound() {
-        render status: NOT_FOUND
+
+        if (response.contentType != "application/json;charset=UTF-8") {
+            render status: NOT_FOUND
+        }
+        else {
+            Map m = ['status': NOT_FOUND.toString()]
+            render m as JSON
+        }
     }
 
     /**

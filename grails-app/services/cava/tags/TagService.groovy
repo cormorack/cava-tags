@@ -1,6 +1,7 @@
 package cava.tags
 
 import grails.gorm.services.Service
+import org.hibernate.FetchMode as FM
 
 @Service(Tag)
 abstract class TagService implements ITagService {
@@ -19,6 +20,7 @@ abstract class TagService implements ITagService {
                     ilike("description", "%${ args.term }%")
                 }
             }
+            fetchMode 'media', FM.JOIN
             order(args.sort, args.order)
             maxResults(args.max)
             firstResult(args.offset)
@@ -26,6 +28,32 @@ abstract class TagService implements ITagService {
         }
 
         List results = Tag.createCriteria().list(['max':args.max, 'offset':args.offset], query)
+
+        return results.unique()
+    }
+
+    /**
+     *
+     * @param title
+     * @return
+     */
+    Tag findByTitle(String title) {
+
+        Closure query = {
+            eq("urlTitle", title)
+            fetchMode 'media', FM.JOIN
+            fetchMode 'tags', FM.JOIN
+            maxResults(1)
+            setReadOnly true
+        }
+
+        List results = Tag.createCriteria().list(query)
+
+        Tag tag = null
+
+        if (results.size() > 0) {
+            tag = results[0] as Tag
+        }
     }
 
 }

@@ -1,0 +1,16 @@
+import cava.tags.Tag
+
+model {
+    Tag tag
+}
+
+json {
+    //results g.render(tag, [deep:true]) {}
+    results {
+        id tag.id
+        title tag.title
+        urlTitle tag.urlTitle
+        media g.render(tag.media ?: [])
+        tags g.render(tag.tags ?: [])
+    }
+}

@@ -6,6 +6,7 @@ class User implements Serializable {
     boolean confirmed = false
     Date date = new Date()
     Set<Role> roles
+    Set<Tag> tags
 
     static constraints = {
         username(nullable: false, blank: false, unique: true, maxSize:50)
@@ -29,7 +30,7 @@ class User implements Serializable {
         })
     }
 
-    static hasMany = [roles: Role]
+    static hasMany = [roles: Role, tags: Tag]
 
     static transients = ['confirm', 'password']
 

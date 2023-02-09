@@ -1,13 +1,15 @@
+import cava.tags.Tag
+
 model {
     Integer max
     Integer offset
     Integer resultCount
-    List tagList
+    List<Tag> tagList = []
 }
 
 json {
     max max
     offset offset
     resultCount resultCount
-    results g.render(tagList) {}
+    results g.render(tagList, [deep:true]) {}
 }

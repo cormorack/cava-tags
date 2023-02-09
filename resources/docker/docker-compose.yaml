@@ -1,0 +1,13 @@
+version: "3.2"
+
+services:
+
+  cava-tags:
+    build:
+      context: ../..
+      dockerfile: resources/docker/Dockerfile
+    image: cormorack/cava-tags:latest
+    ports:
+      - 8080:8080
+
+
