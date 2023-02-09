@@ -1,14 +1,13 @@
-
-#FROM openjdk:11
+#Separate build step
 FROM eclipse-temurin:11-jdk-jammy
-MAINTAINER John Doe "john.doe@example.com"
+RUN mkdir /project
+COPY . /project
+WORKDIR /project
+RUN ./gradlew assemble
 
+FROM eclipse-temurin:11-jdk-jammy
+RUN mkdir -p /app
 EXPOSE 8080
-
 WORKDIR /app
-COPY *.jar application.jar
-
-CMD ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/application.jar"]
-
-# Deploy the WAR in Tomcat
-COPY --from=buildwar /tmp/CavaMedia/build/libs/*.war $CATALINA_HOME/webapps/
+COPY --from=0 /project/build/libs/cava-tags-0.1.jar /app
+CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "-Dgrails.env=prod", "cava-tags-0.1.jar"]
