@@ -15,14 +15,14 @@ class Tag {
     static belongsTo = [User]
 
     static constraints = {
-        title(blank:false, maxSize:100, unique:true, validator: {
-            if (it.matches('^.*[!@#$%^&?/;_()*-+-].*$')) {
+        title(blank:false, maxSize:255, unique:true, validator: {
+            if (it.matches('^.*[!@#$%^&?/;_()*-+].*$')) {
                 return 'title.illegal.character'
             }
         })
-        urlTitle(maxSize:100, unique:true)
+        urlTitle(maxSize:255, unique:true)
         description(nullable:true)
-        category(nullable:true, maxSize:100)
+        category(nullable:true, maxSize:255)
         user(nullable: true)
     }
 

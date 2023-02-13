@@ -94,6 +94,15 @@ class TagController {
         }
     }
 
+    def parseTagList() {
+
+        String path = getServletContext().getRealPath("/")
+
+        boolean result = tagService.createTagsFromText(path)
+
+        render result
+    }
+
     protected void notFound() {
         request.withFormat {
             form multipartForm {
