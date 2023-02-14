@@ -76,7 +76,7 @@
             };
 
             const results = function () {
-                fetch(location.origin + '/public/tags')
+                fetch(location.origin + '/public/tags?sort=title&order=asc')
                     .then((res) => res.json())
                     .then((data) => {
                         this.store.results = data.results

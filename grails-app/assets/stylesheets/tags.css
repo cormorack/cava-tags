@@ -27,7 +27,7 @@ div:first-child {
 .tagcloud03 ul li a {
     position: relative;
     display: inline-block;
-    max-width: 100px;
+    max-width: 300px;
     height: 28px;
     line-height: 28px;
     padding: 0 2.5em 0 1em;

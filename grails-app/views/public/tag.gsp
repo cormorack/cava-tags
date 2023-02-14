@@ -15,22 +15,26 @@
                     <div v-scope v-effect="fetchData()" class="tag">
                         <h3>{{ results.title }}</h3>
                         <shiro:isLoggedIn>
-                            <br /><a :href="'/tag/edit/' + results.id">Edit</a>
+                            <br /><a :href="'/tag/edit/' + results.id" class="btn btn-primary btn-sm">Edit</a>
                         </shiro:isLoggedIn>
-                        <div class="tagcloud03">
-                            <ul>
-                                <li v-for="tag in results.tags" :key="tag.id">
-                                    {{ tag.title }}
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="tagcloud03">
-                            <ul>
-                                <li v-for="media in results.media" :key="media.id">
-                                    <a v-bind:href="media.url">{{ media.title }}</a>
-                                </li>
-                            </ul>
-                        </div>
+                        <h4>Media</h4>
+                        <ul>
+                            <li v-for="media in results.media">
+                                <a v-bind:href="media.url">{{ media.title }}</a>
+                                <span v-show="media.type == 'VIDEO'">
+                                    <i class="bi bi-camera-video"></i>
+                                </span>
+                                <span v-show="media.type == 'IMAGE'">
+                                    <i class="bi bi-image"></i>
+                                </span>
+                            </li>
+                        </ul>
+                        <h4>Tags</h4>
+                        <ul>
+                            <li v-for="tag in results.tags">
+                                <a v-bind:href="tag.urlTitle">{{ tag.title }}</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -47,7 +51,6 @@
                 results: [],
                 fetchData() {
                     fetch(location.origin + '/public/findByTitle?title=' + '${tag}')
-
                         .then((res) => res.json())
                         .then((data) => {
                             this.results = data.results

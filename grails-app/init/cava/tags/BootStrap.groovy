@@ -2,13 +2,18 @@ package cava.tags
 
 import grails.gorm.transactions.Transactional
 import org.apache.shiro.authc.credential.PasswordService
+import javax.servlet.ServletContext
 
 class BootStrap {
 
     PasswordService credentialMatcher
+    TagService tagService
 
     def init = { servletContext ->
+
         createUsers()
+        String path = servletContext.getRealPath("/")
+        tagService.createTagsFromText(path)
     }
     def destroy = {
     }
@@ -39,7 +44,7 @@ class BootStrap {
         Media media = new Media(title: "Media 1", url: "https://interactiveoceans.washington.edu/img_2170/", type: Media.Type.VIDEO).save()
         Media media2 = new Media(title: "Media 2", url: "https://interactiveoceans.washington.edu/img_8704/", type: Media.Type.IMAGE).save()
 
-        (1..< 20).each {
+        /*(1..< 20).each {
             Tag tag = new Tag(title: "${it} tag", urlTitle: "${it}-tag")
             tag.addToMedia(media)
             tag.addToMedia(media2)
@@ -53,6 +58,6 @@ class BootStrap {
 
             TagAssociation tagAssociation = new TagAssociation(tag: tag1, otherTag: tag2).save(flush:true)
             TagAssociation otherTagAssociation = new TagAssociation(tag: tag2, otherTag: tag1).save(flush:true)
-        }
+        }*/
     }
 }
