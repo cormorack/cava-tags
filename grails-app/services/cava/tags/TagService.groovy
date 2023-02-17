@@ -25,6 +25,7 @@ abstract class TagService implements ITagService {
                 }
             }
             fetchMode 'media', FM.JOIN
+            fetchMode 'tags', FM.JOIN
             order(args.sort, args.order)
             maxResults(args.max)
             firstResult(args.offset)
@@ -93,6 +94,9 @@ abstract class TagService implements ITagService {
             int counter = 0
             String parentTag = ""
 
+            Media media = new Media(title: "Media 1", url: "https://interactiveoceans.washington.edu/placeholder20230215091022/", type: Media.Type.VIDEO).save(flush:true)
+            Media media2 = new Media(title: "Media 2", url: "https://interactiveoceans.washington.edu/img_8704/", type: Media.Type.IMAGE).save(flush:true)
+
             for (XWPFParagraph paragraph in paragraphList) {
 
                 if (paragraph.getText().size() < 13) { // Reference designators should have at least have 13 characters
@@ -107,6 +111,10 @@ abstract class TagService implements ITagService {
 
                 Tag tag = Tag.findByTitle(refDes)
 
+                if (tag) {
+                    continue
+                }
+
                 if (refDes.findAll({it -> it == "-"}).size() == 1) {
 
                     String url = URLEncoder.encode(refDes.trim() , StandardCharsets.UTF_8.toString())
@@ -117,6 +125,8 @@ abstract class TagService implements ITagService {
                         log.error("Tag ${tag} could not be validated because of ${tag.errors}")
                         continue
                     }
+                    tag.addToMedia(media)
+                    tag.addToMedia(media2)
                     tag.save(flush:true)
                     parentTag = tag.title
                 }

@@ -53,7 +53,7 @@
                     fetch(location.origin + '/public/findByTitle?title=' + '${tag}')
                         .then((res) => res.json())
                         .then((data) => {
-                            this.results = data.results
+                            this.results = data
                         }
                     )
                 }

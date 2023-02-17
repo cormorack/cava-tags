@@ -41,7 +41,7 @@ class BootStrap {
         Permission permission = new Permission(permissionsString: "tag:index", user: normalUser).save()
         Permission permission1 = new Permission(permissionsString: "tag:show:1", user: normalUser).save()
 
-        Media media = new Media(title: "Media 1", url: "https://interactiveoceans.washington.edu/img_2170/", type: Media.Type.VIDEO).save()
+        Media media = new Media(title: "Media 1", url: "https://interactiveoceans.washington.edu/placeholder20230215091022/", type: Media.Type.VIDEO).save()
         Media media2 = new Media(title: "Media 2", url: "https://interactiveoceans.washington.edu/img_8704/", type: Media.Type.IMAGE).save()
 
         /*(1..< 20).each {
