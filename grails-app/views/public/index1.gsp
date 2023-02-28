@@ -11,7 +11,7 @@
 <body>
 
 <div v-effect="fetchData()" v-scope class="m-3">
-    <h3>Data Table with Petite-Vue</h3>
+    <h3>Media Tags</h3>
     <div class="d-flex justify-content-between my-3">
         <div>
             <input type="search" v-model="search" class="form-control" placeholder="Search here..." @click.prevent="pageActive = 1">

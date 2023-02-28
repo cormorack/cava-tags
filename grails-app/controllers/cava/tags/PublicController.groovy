@@ -25,6 +25,8 @@ class PublicController {
 
         setParams(max)
 
+        params.max = 100
+
         PagedResultList tagList = tagService.search(params) as PagedResultList
 
         response.setContentType("application/json;charset=UTF-8")

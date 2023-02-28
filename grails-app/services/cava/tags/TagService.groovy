@@ -150,6 +150,8 @@ abstract class TagService implements ITagService {
                         log.error("The Tag ${associatedTag} could not be validated because of ${associatedTag.errors}")
                         continue
                     }
+                    associatedTag.addToMedia(media)
+                    associatedTag.addToMedia(media2)
                     associatedTag.save(flush:true)
 
                     Tag parent = Tag.findByTitle(parentTag)
