@@ -3,19 +3,25 @@ package cava.tags
 import grails.converters.JSON
 import grails.gorm.PagedResultList
 import grails.compiler.GrailsCompileStatic
-
+//import grails.util.Holders
 import static org.springframework.http.HttpStatus.NOT_FOUND
 
 @GrailsCompileStatic
 class PublicController {
 
+    //Holders config = Holders.config
     TagService tagService
+    private final String contentType = "application/json;charset=UTF-8"
 
-    def index() {}
+    def index() {params:params}
 
     def test() {}
 
-    def index1() {}
+    def index1() {
+
+        String context = grailsApplication.config.getProperty('server.servlet.context-path') ?: ""
+        [params:params, context: context]
+    }
 
     /**
      *
@@ -25,17 +31,15 @@ class PublicController {
 
         setParams(max)
 
-        params.max = 100
-
         PagedResultList tagList = tagService.search(params) as PagedResultList
 
-        response.setContentType("application/json;charset=UTF-8")
+        response.setContentType(contentType)
 
         render template: "/public/tags",
                 model: [
                     max: params.max,
                     resultCount: tagList.getTotalCount() ?: 0,
-                    offset: params.offset,
+                    offset: params.offset.toString().toInteger(),
                     tagList: tagList
                 ]
     }
@@ -59,7 +63,7 @@ class PublicController {
      */
     def findByTitle() {
 
-        response.setContentType("application/json;charset=UTF-8")
+        response.setContentType(contentType)
 
         String urlTitle = params.title
 
@@ -80,7 +84,7 @@ class PublicController {
 
     protected void notFound() {
 
-        if (response.contentType != "application/json;charset=UTF-8") {
+        if (response.contentType != contentType) {
             render status: NOT_FOUND
         }
         else {

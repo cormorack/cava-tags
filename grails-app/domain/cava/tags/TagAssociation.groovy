@@ -10,6 +10,7 @@ class TagAssociation implements Serializable {
         version false
         otherTag column:'tags__id'
         id composite: ['tag', 'otherTag']
+        cache true
     }
 
     static boolean exists(Tag tag, Tag otherTag) {

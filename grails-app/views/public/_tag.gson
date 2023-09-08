@@ -5,13 +5,14 @@ model {
 }
 
 json {
-    //results g.render(tag, [deep:true]) {}
+    //g.render(tag, [deep:true]) {}
     //results {
         id tag.id
         title tag.title
         description tag.description
         urlTitle tag.urlTitle
         media g.render(tag.media ?: [])
-        tags g.render(tag.tags, [deep:true]) {}
+        //tags g.render(tag.tags, [deep:true]) {}
+        tags g.render(tag.tags?.sort {it.title}.reverse())
     //}
 }

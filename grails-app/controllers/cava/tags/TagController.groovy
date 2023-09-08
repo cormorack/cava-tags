@@ -1,9 +1,7 @@
 package cava.tags
 
 import grails.validation.ValidationException
-
 import java.nio.charset.StandardCharsets
-
 import static org.springframework.http.HttpStatus.*
 
 class TagController {

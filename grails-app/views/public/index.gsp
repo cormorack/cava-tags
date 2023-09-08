@@ -1,11 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
-
     <head>
         <meta name="layout" content="public" />
     </head>
-
     <body>
         <div class="container">
             <div class="row">
@@ -37,11 +35,9 @@
                 </div>
             </div>
         </div>
-
         <script type="module">
 
-            /*import { createApp, reactive } from '${assetPath(src: 'petite-vue.es.js')}?module'*/
-            import { createApp, reactive } from 'https://unpkg.com/petite-vue@0.2.2/dist/petite-vue.es.js?module'
+            import { createApp, reactive } from '${assetPath(src: 'petite-vue.es.js')}?module'
 
             const store = reactive({
                 term: "",
@@ -76,7 +72,7 @@
             };
 
             const results = function () {
-                fetch(location.origin + '/public/tags?sort=title&order=asc')
+                fetch(location.origin + '/public/tags?sort=title&order=asc&max=${params.max}')
                     .then((res) => res.json())
                     .then((data) => {
                         this.store.results = data.results

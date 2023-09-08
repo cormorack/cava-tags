@@ -2,6 +2,7 @@ package cava.tags
 
 import grails.gorm.services.Service
 import grails.gorm.transactions.Transactional
+import org.hibernate.Criteria
 import org.hibernate.FetchMode as FM
 import org.apache.poi.xwpf.usermodel.XWPFDocument
 import org.apache.poi.xwpf.usermodel.XWPFParagraph
@@ -18,6 +19,7 @@ abstract class TagService implements ITagService {
     List search(Map args) {
 
         Closure query = {
+            resultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
             if (args.term) {
                 or {
                     ilike("title", "%${ args.term }%")
@@ -25,20 +27,23 @@ abstract class TagService implements ITagService {
                 }
             }
             fetchMode 'media', FM.JOIN
-            fetchMode 'tags', FM.JOIN
+            //fetchMode 'tags', FM.JOIN
             order(args.sort, args.order)
             maxResults(args.max)
-            firstResult(args.offset)
+            firstResult(args.offset.toInteger())
             setReadOnly true
         }
 
-        List results = Tag.createCriteria().list(['max':args.max, 'offset':args.offset], query)
+        List results = Tag.createCriteria().list(
+                ['max': args.max, 'offset': args.offset],
+                query
+        )
 
-        return results.unique()
+        return results
     }
 
     /**
-     *
+     * Queries and returns a Tag by its title
      * @param title
      * @return
      */
@@ -59,12 +64,15 @@ abstract class TagService implements ITagService {
         if (results.size() > 0) {
             tag = results[0] as Tag
         }
+        /*def foo = Tag.where {
+            urlTitle == title
+        }*/
     }
 
     /**
-     *
-     * @param path
-     * @return
+     * Creates Tags from a file
+     * @param path Path to the file
+     * @return boolean value
      */
     @Transactional
     boolean createTagsFromText (String path) {
@@ -74,18 +82,21 @@ abstract class TagService implements ITagService {
             String filePath = path + "/files/ref_des.docx"
 
             FileInputStream fis = new FileInputStream(filePath)
+
             if (fis == null) {
                 log.error("The fileInputStream is null")
                 return false
             }
 
             XWPFDocument xdoc = new XWPFDocument(fis)
+
             if (xdoc == null) {
                 log.error("The XWPDocument is null")
                 return false
             }
 
             List paragraphList = xdoc.getParagraphs()
+
             if (paragraphList.size() == 0) {
                 log.error("There is no text")
                 return false
@@ -97,6 +108,7 @@ abstract class TagService implements ITagService {
             Media media = new Media(title: "Media 1", url: "https://interactiveoceans.washington.edu/placeholder20230215091022/", type: Media.Type.VIDEO).save(flush:true)
             Media media2 = new Media(title: "Media 2", url: "https://interactiveoceans.washington.edu/img_8704/", type: Media.Type.IMAGE).save(flush:true)
 
+            // Loop through the list of Tag titles ('paragraph')
             for (XWPFParagraph paragraph in paragraphList) {
 
                 if (paragraph.getText().size() < 13) { // Reference designators should have at least have 13 characters
@@ -111,6 +123,7 @@ abstract class TagService implements ITagService {
 
                 Tag tag = Tag.findByTitle(refDes)
 
+                // Check to see if the Tag exists
                 if (tag) {
                     continue
                 }
@@ -150,8 +163,8 @@ abstract class TagService implements ITagService {
                         log.error("The Tag ${associatedTag} could not be validated because of ${associatedTag.errors}")
                         continue
                     }
-                    associatedTag.addToMedia(media)
-                    associatedTag.addToMedia(media2)
+                    //associatedTag.addToMedia(media)
+                    //associatedTag.addToMedia(media2)
                     associatedTag.save(flush:true)
 
                     Tag parent = Tag.findByTitle(parentTag)
