@@ -11,15 +11,18 @@ class PublicController {
 
     //Holders config = Holders.config
     TagService tagService
+
     private final String contentType = "application/json;charset=UTF-8"
 
-    def index() {params:params}
+    String context = grailsApplication.config.getProperty('server.servlet.context-path') ?: ""
+
+    def index() {
+        [params:params, context: context]
+    }
 
     def test() {}
 
     def index1() {
-
-        String context = grailsApplication.config.getProperty('server.servlet.context-path') ?: ""
         [params:params, context: context]
     }
 

@@ -41,12 +41,10 @@
                 </div>
             </div>
         </div>
-        <asset:javascript src="bootstrap5.2.min.js" />
-        <script type="module">
 
-            import { createApp } from '${assetPath(src: 'petite-vue.es.js')}?module'
-
-            createApp({
+        <asset:javascript src="petite-vue-iife.js"/>
+        <script>
+            PetiteVue.createApp({
                 results: [],
                 fetchData() {
                     fetch(location.origin + '/public/findByTitle?title=' + '${tag}')

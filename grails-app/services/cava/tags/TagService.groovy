@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets
 abstract class TagService implements ITagService {
 
     /**
-     * Returns a sorted and paginated List of tags.  Optionally searches for 'term'
+     * Returns a sorted and paginated List of Tags.  Optionally searches for 'term'
      * @param args
      * @return
      */
@@ -64,9 +64,6 @@ abstract class TagService implements ITagService {
         if (results.size() > 0) {
             tag = results[0] as Tag
         }
-        /*def foo = Tag.where {
-            urlTitle == title
-        }*/
     }
 
     /**
@@ -79,12 +76,10 @@ abstract class TagService implements ITagService {
 
         try {
 
-            String filePath = path + "/files/ref_des.docx"
-
-            FileInputStream fis = new FileInputStream(filePath)
+            InputStream fis = getClass().getResourceAsStream(path)
 
             if (fis == null) {
-                log.error("The fileInputStream is null")
+                log.error("The InputStream is null")
                 return false
             }
 
@@ -105,8 +100,17 @@ abstract class TagService implements ITagService {
             int counter = 0
             String parentTag = ""
 
-            Media media = new Media(title: "Media 1", url: "https://interactiveoceans.washington.edu/placeholder20230215091022/", type: Media.Type.VIDEO).save(flush:true)
-            Media media2 = new Media(title: "Media 2", url: "https://interactiveoceans.washington.edu/img_8704/", type: Media.Type.IMAGE).save(flush:true)
+            Media media = new Media(
+                    title: "Media 1",
+                    url: "https://interactiveoceans.washington.edu/placeholder20230215091022/",
+                    type: Media.Type.VIDEO
+            ).save(flush:true)
+
+            Media media2 = new Media(
+                    title: "Media 2",
+                    url: "https://interactiveoceans.washington.edu/img_8704/",
+                    type: Media.Type.IMAGE
+            ).save(flush:true)
 
             // Loop through the list of Tag titles ('paragraph')
             for (XWPFParagraph paragraph in paragraphList) {
@@ -123,7 +127,7 @@ abstract class TagService implements ITagService {
 
                 Tag tag = Tag.findByTitle(refDes)
 
-                // Check to see if the Tag exists
+                // Check to see if the Tag already exists
                 if (tag) {
                     continue
                 }
@@ -179,7 +183,6 @@ abstract class TagService implements ITagService {
                 }
                 counter ++
             }
-
 
         } catch (Exception ex) {
             ex.printStackTrace()

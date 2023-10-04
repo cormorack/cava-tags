@@ -2,7 +2,6 @@ package cava.tags
 
 import grails.gorm.transactions.Transactional
 import org.apache.shiro.authc.credential.PasswordService
-import javax.servlet.ServletContext
 
 class BootStrap {
 
@@ -12,11 +11,11 @@ class BootStrap {
     def init = { servletContext ->
 
         createUsers()
-        String path = servletContext.getRealPath("/")
+        String path = "/ref_des.docx"
         tagService.createTagsFromText(path)
     }
-    def destroy = {
-    }
+
+    def destroy = {}
 
     @Transactional
     void createUsers() {
