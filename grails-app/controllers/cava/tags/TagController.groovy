@@ -1,9 +1,7 @@
 package cava.tags
 
 import grails.validation.ValidationException
-
 import java.nio.charset.StandardCharsets
-
 import static org.springframework.http.HttpStatus.*
 
 class TagController {
@@ -92,6 +90,15 @@ class TagController {
             }
             '*'{ render status: NO_CONTENT }
         }
+    }
+
+    def parseTagList() {
+
+        String path = getServletContext().getRealPath("/")
+
+        boolean result = tagService.createTagsFromText(path)
+
+        render result
     }
 
     protected void notFound() {

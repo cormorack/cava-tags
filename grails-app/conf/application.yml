@@ -97,6 +97,8 @@ hibernate:
         queries: false
         use_second_level_cache: false
         use_query_cache: false
+        region:
+            factory_class: 'org.hibernate.cache.ehcache.EhCacheRegionFactory'
 dataSource:
     pooled: true
     jmxExport: true
@@ -108,16 +110,17 @@ environments:
     development:
         dataSource:
             dbCreate: create-drop
-            url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            url: jdbc:h2:mem:devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
             logSql: true
     test:
         dataSource:
             dbCreate: create-drop
-            url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            url: jdbc:h2:mem:testDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
     production:
         dataSource:
             dbCreate: create-drop
-            url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            url: jdbc:h2:mem:devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            #url: '${JDBC_CONNECTION_STRING}'
             logSql: true
 #            dbCreate: none
 #            url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
@@ -167,3 +170,7 @@ security:
 #            filterChainDefinitions: |
 #                /basic/** = authcBasic
 #                /form/** = authc
+
+server:
+    servlet:
+        context-path: /

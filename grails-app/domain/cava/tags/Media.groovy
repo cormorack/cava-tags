@@ -41,6 +41,7 @@ class Media {
     static mapping = {
         id generator:'sequence', params:[sequence:'media_seq']
         description type:'text'
+        cache true
     }
 
     String toString() {

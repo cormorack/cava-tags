@@ -12,4 +12,5 @@ json {
     offset offset
     resultCount resultCount
     results g.render(tagList, [deep:true]) {}
+    //results g.render(template:"/public/tag", collection: tagList)
 }
